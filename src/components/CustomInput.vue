@@ -1,11 +1,13 @@
 <template>
   <div class="custom-input-container">
     <div class="custom-input">
-      <div class="box" v-show="!isEdit" @click="showTool = !showTool">
-        <i class="fas" :class="linkTypes[selectedLink].icon"></i>
-      </div>
+      <input-box
+        :show="!isEdit"
+        :icon="linkTypes[selectedLink].icon"
+        :onClick="toggleTool"
+      />
 
-      <div class="input-container" @click="isEdit = true">
+      <div class="input-container">
         <input
           class="input"
           :type="linkTypes[selectedLink].type"
@@ -17,25 +19,23 @@
         <div class="input-mirror" v-if="!isEdit" @click.stop="mirrorClick" />
       </div>
 
-      <div v-show="isEdit" class="box box-orange" @click="isEdit = !isEdit">
-        <i class="fas fa-check"></i>
-      </div>
+      <input-box
+        :show="isEdit"
+        :boxClass="'box-orange'"
+        :onClick="checkClick"
+        :icon="'fa-check'"
+      />
 
-      <div class="box" v-show="isEdit" @click="cancelInput">
-        <i class="fas fa-times"></i>
-      </div>
+      <input-box :show="isEdit" :onClick="cancelInput" :icon="'fa-times'" />
 
-      <div
-        class="box box-white"
-        v-if="value.length && !isEdit"
-        @click="value = ''"
-      >
-        <i class="fas fa-trash"></i>
-      </div>
+      <input-box
+        :boxClass="'box-white'"
+        :show="!!value.length && !isEdit"
+        :icon="'fa-trash'"
+        :onClick="deleteClick"
+      />
 
-      <div v-show="!isEdit" class="box">
-        <i class="fas fa-external-link-alt"></i>
-      </div>
+      <input-box :show="!isEdit" :icon="'fa-external-link-alt'" />
     </div>
 
     <!-- Tooltip -->
@@ -43,16 +43,18 @@
       :showTool="showTool"
       :linkTypes="linkTypes"
       :linkClicked="linkClicked"
+      ref="tooltip"
     />
   </div>
 </template>
 
 <script>
 import InputTooltip from './InputTooltip.vue';
+import InputBox from './InputBox.vue';
 
 export default {
   name: 'CustomInput',
-  components: { InputTooltip },
+  components: { InputTooltip, InputBox },
   data() {
     return {
       showTool: false,
@@ -95,7 +97,11 @@ export default {
   },
   methods: {
     listener(event) {
-      if (!this.$refs.tooltip || this.$refs.tooltip.contains(event.target)) {
+      if (
+        // eslint-disable-next-line operator-linebreak
+        !this.$refs.tooltip.$refs.tooltip ||
+        this.$refs.tooltip.$refs.tooltip.contains(event.target)
+      ) {
         return;
       }
       this.showTool = false;
@@ -111,6 +117,15 @@ export default {
     linkClicked(link) {
       this.selectedLink = link;
       this.showTool = false;
+    },
+    toggleTool() {
+      this.showTool = !this.showTool;
+    },
+    checkClick() {
+      this.isEdit = !this.isEdit;
+    },
+    deleteClick() {
+      this.value = '';
     },
   },
 };
@@ -150,46 +165,9 @@ export default {
   position: relative;
 }
 
-.custom-input input {
+.input {
   border: 0;
   outline: none;
   padding: 10px;
-}
-
-.box {
-  width: 15%;
-  height: 100%;
-  background: #f0f2f6;
-  color: #494c53;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.box-orange {
-  background: #e74f30;
-  color: white;
-}
-
-/* TODO: make border orange */
-.custom-input:has(.custom-input > .box-orange) {
-  border-color: #e74f30;
-}
-
-.box-white {
-  background-color: white;
-}
-
-.box > i {
-  font-size: 70%;
-}
-
-.box:hover {
-  background: #bcc2cb;
-}
-
-.box:active {
-  background: #494c53;
-  color: white;
 }
 </style>

@@ -1,13 +1,12 @@
 <template>
   <div class="box" :class="boxClass" v-show="show" @click="onClick">
-    <i class="fas" :class="icon"></i>
+    <font-awesome-icon class="icon" :icon="icon" />
   </div>
 </template>
 
 <script>
 export default {
   name: 'InputBox',
-  // props: ['boxClass', 'icon', 'show', 'onClick'],
   props: {
     boxClass: String,
     icon: String,
@@ -42,8 +41,8 @@ export default {
   background-color: white;
 }
 
-.box > i {
-  font-size: 70%;
+.icon {
+  font-size: 80%;
 }
 
 .box:hover {
@@ -52,6 +51,10 @@ export default {
 
 .box:active {
   background: #494c53;
+}
+
+.box:active .icon,
+.box-orange .icon {
   color: white;
 }
 </style>

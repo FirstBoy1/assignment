@@ -7,7 +7,7 @@
         :key="link.name"
         @click="linkClicked(index)"
       >
-        <i class="tooltip-icon far" :class="link.icon"></i>
+        <font-awesome-icon class="icon" :icon="link.icon" />
         <p class="tooltip-text">{{ link.text }}</p>
       </div>
     </div>
@@ -64,7 +64,7 @@ export default {
   font-size: 0.9rem;
 }
 
-.tooltip i {
+.icon {
   color: #494c53;
   font-size: 0.9rem;
   width: 16px;

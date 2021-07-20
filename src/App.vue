@@ -1,5 +1,7 @@
 <template>
-  <custom-input />
+  <div>
+    <custom-input />
+  </div>
 </template>
 
 <script>

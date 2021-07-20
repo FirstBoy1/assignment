@@ -23,19 +23,19 @@
         :show="isEdit"
         :boxClass="'box-orange'"
         :onClick="checkClick"
-        :icon="'fa-check'"
+        :icon="'check'"
       />
 
-      <input-box :show="isEdit" :onClick="cancelInput" :icon="'fa-times'" />
+      <input-box :show="isEdit" :onClick="cancelInput" :icon="'times'" />
 
       <input-box
         :boxClass="'box-white'"
         :show="!!value.length && !isEdit"
-        :icon="'fa-trash'"
+        :icon="'trash'"
         :onClick="deleteClick"
       />
 
-      <input-box :show="!isEdit" :icon="'fa-external-link-alt'" />
+      <input-box :show="!isEdit" :icon="'external-link-alt'" />
     </div>
 
     <!-- Tooltip -->
@@ -63,21 +63,21 @@ export default {
       selectedLink: 0,
       linkTypes: [
         {
-          icon: 'fa-envelope',
+          icon: 'envelope',
           text: 'Link to Email',
           name: 'email',
           type: 'email',
           placeholder: 'Email',
         },
         {
-          icon: 'fa-copy',
+          icon: 'copy',
           text: 'Link to Page',
           name: 'page',
           type: 'url',
           placeholder: 'Page',
         },
         {
-          icon: 'fa-mobile-alt',
+          icon: 'mobile-alt',
           text: 'Link to Phone',
           name: 'phone',
           type: 'tel',

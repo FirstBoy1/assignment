@@ -11,6 +11,9 @@
     "storybook": "start-storybook -p 9001 -c .storybook -s public"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/addon-knobs": "^6.3.0",
     "core-js": "^3.6.5",

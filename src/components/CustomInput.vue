@@ -39,25 +39,20 @@
     </div>
 
     <!-- Tooltip -->
-    <div class="tooltip" v-show="showTool" ref="tooltip">
-      <div class="tooltip-content">
-        <div
-          class="tooltip-item"
-          v-for="(link, index) of linkTypes"
-          :key="link.name"
-          @click="linkClicked(index)"
-        >
-          <i class="tooltip-icon far" :class="link.icon"></i>
-          <p class="tooltip-text">{{ link.text }}</p>
-        </div>
-      </div>
-    </div>
+    <input-tooltip
+      :showTool="showTool"
+      :linkTypes="linkTypes"
+      :linkClicked="linkClicked"
+    />
   </div>
 </template>
 
 <script>
+import InputTooltip from './InputTooltip.vue';
+
 export default {
   name: 'CustomInput',
+  components: { InputTooltip },
   data() {
     return {
       showTool: false,
@@ -140,55 +135,6 @@ export default {
   right: 0;
   bottom: 0;
   cursor: pointer;
-}
-
-.tooltip {
-  position: absolute;
-  left: -2%;
-  top: -50%;
-  background: white;
-  border-radius: 12px;
-  min-width: 150px;
-  transform: translateX(-100%);
-}
-
-.tooltip-content {
-  overflow: hidden;
-  border-radius: 12px;
-}
-
-/* TODO: */
-.tooltip::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateX(100%) translateY(-50%);
-  border: 5px solid transparent;
-  border-left-color: white;
-}
-
-.tooltip-item {
-  padding: 7px;
-  display: flex;
-  align-items: center;
-}
-
-.tooltip-item:hover {
-  background: #bcc2cb;
-}
-
-.tooltip-text {
-  margin: 0;
-  margin-left: 5px;
-  font-size: 0.9rem;
-}
-
-.tooltip i {
-  color: #494c53;
-  font-size: 0.9rem;
-  width: 16px;
-  height: 16px;
 }
 
 .custom-input {

@@ -49,7 +49,7 @@ const ToolTipItem = styled('div')`
   cursor: pointer;
 
   &:hover {
-    background: #bcc2cb;
+    background: #f0f2f6;
   }
 `;
 

@@ -7,13 +7,17 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "storybook": "start-storybook -p 9001 -c .storybook -s public"
   },
   "dependencies": {
+    "@storybook/addon-actions": "^6.3.4",
+    "@storybook/addon-knobs": "^6.3.0",
     "core-js": "^3.6.5",
     "vue": "^2.6.11"
   },
   "devDependencies": {
+    "@storybook/vue": "^6.3.4",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-e2e-cypress": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",

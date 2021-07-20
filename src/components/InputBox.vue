@@ -34,8 +34,8 @@ const Box = styled('div')`
     background: #494c53;
   }
 
-  &:active .icon,
-  &.box-orange .icon {
+  &:active svg[data-icon],
+  &.box-orange svg[data-icon] {
     color: white;
   }
 `;

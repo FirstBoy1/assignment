@@ -12,7 +12,7 @@
           :type="linkTypes[selectedLink].type"
           :placeholder="linkTypes[selectedLink].placeholder"
           :pattern="linkTypes[selectedLink].pattern || ''"
-          v-model="value"
+          :value="value"
           @keyup="inputChange"
           ref="input"
         />
@@ -151,15 +151,16 @@ export default {
     document.removeEventListener('touchstart', this.listener);
   },
   methods: {
-    validateInput() {
-      console.log(this.value);
-      // const { pattern } = this.linkTypes[this.selectedLink];
-      // const isValid = !!this.value.match(pattern);
-      // this.inputValid = isValid;
-      // return isValid;
+    validateInput(value) {
+      const { pattern } = this.linkTypes[this.selectedLink];
+      const isValid = !!value.match(pattern);
+      this.inputValid = isValid;
+      return isValid;
     },
     inputChange(e) {
-      const isValid = this.validateInput();
+      const { value } = e.target;
+      this.value = value;
+      const isValid = this.validateInput(value);
       if (e.key === 'Enter' && isValid) {
         this.isEdit = false;
         this.$refs.input.blur();

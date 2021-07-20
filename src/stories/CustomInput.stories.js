@@ -1,14 +1,14 @@
 import { action } from '@storybook/addon-actions';
 import { withKnobs } from '@storybook/addon-knobs';
-import CustomInputComp from '../components/CustomInput.vue';
+import CustomInput from '../components/CustomInput.vue';
 
 export default {
   title: 'MyCustomInput',
   decorators: [withKnobs],
 };
 
-export const CustomInput = () => ({
-  components: { CustomInputComp },
+export const Input = () => ({
+  components: { CustomInput },
   template: '<CustomInput />',
   methods: {
     mirrorClick: action('button-clicked'),
@@ -17,6 +17,6 @@ export const CustomInput = () => ({
   },
 });
 
-CustomInput.story = {
+Input.story = {
   name: 'CustomInput',
 };

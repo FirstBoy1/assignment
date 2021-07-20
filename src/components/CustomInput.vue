@@ -137,6 +137,7 @@ export default {
     linkClicked(link) {
       this.selectedLink = link;
       this.showTool = false;
+      this.value = '';
     },
     toggleTool() {
       this.showTool = !this.showTool;

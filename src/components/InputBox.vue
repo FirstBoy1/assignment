@@ -1,12 +1,52 @@
 <template>
-  <div class="box" :class="boxClass" v-show="show" @click="onClick">
-    <font-awesome-icon class="icon" :icon="icon" />
-  </div>
+  <Box :class="boxClass" v-show="show" @click="onClick">
+    <Icon :icon="icon" />
+  </Box>
 </template>
 
 <script>
+import { styled } from '@egoist/vue-emotion';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+const Box = styled('div')`
+  width: 15%;
+  height: 100%;
+  background: #f0f2f6;
+  color: #494c53;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.box-orange {
+    background: #e74f30;
+    color: white;
+  }
+
+  &.box-white {
+    background-color: white;
+  }
+
+  &:hover {
+    background: #bcc2cb;
+  }
+
+  &:active {
+    background: #494c53;
+  }
+
+  &:active .icon,
+  &.box-orange .icon {
+    color: white;
+  }
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+  font-size: 80%;
+`;
+
 export default {
   name: 'InputBox',
+  components: { Box, Icon },
   props: {
     boxClass: String,
     icon: String,
@@ -15,46 +55,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.box {
-  width: 15%;
-  height: 100%;
-  background: #f0f2f6;
-  color: #494c53;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.box-orange {
-  background: #e74f30;
-  color: white;
-}
-
-/* TODO: make border orange */
-.custom-input:has(.custom-input > .box-orange) {
-  border-color: #e74f30;
-}
-
-.box-white {
-  background-color: white;
-}
-
-.icon {
-  font-size: 80%;
-}
-
-.box:hover {
-  background: #bcc2cb;
-}
-
-.box:active {
-  background: #494c53;
-}
-
-.box:active .icon,
-.box-orange .icon {
-  color: white;
-}
-</style>

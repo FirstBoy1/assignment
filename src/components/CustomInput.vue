@@ -1,15 +1,14 @@
 <template>
-  <div class="custom-input-container">
+  <CustomInputContainer>
     <div class="custom-input">
-      <input-box
+      <InputBox
         :show="!isEdit"
         :icon="linkTypes[selectedLink].icon"
         :onClick="toggleTool"
       />
 
-      <div class="input-container">
-        <input
-          class="input"
+      <InputContainer>
+        <Input
           :type="linkTypes[selectedLink].type"
           :placeholder="linkTypes[selectedLink].placeholder"
           :pattern="linkTypes[selectedLink].pattern || ''"
@@ -17,45 +16,95 @@
           @keyup="inputChange"
           ref="input"
         />
-        <div class="input-mirror" v-if="!isEdit" @click.stop="mirrorClick" />
-      </div>
+        <InputMirror v-if="!isEdit" @click.stop="mirrorClick" />
+      </InputContainer>
 
-      <input-box
+      <InputBox
         :show="isEdit"
         :boxClass="inputValid && value.length ? 'box-orange' : ''"
         :onClick="inputValid && value.length ? checkClick : () => {}"
         :icon="'check'"
       />
 
-      <input-box :show="isEdit" :onClick="cancelInput" :icon="'times'" />
+      <InputBox :show="isEdit" :onClick="cancelInput" :icon="'times'" />
 
-      <input-box
+      <InputBox
         :boxClass="'box-white'"
         :show="!!value.length && !isEdit"
         :icon="'trash'"
         :onClick="deleteClick"
       />
 
-      <input-box :show="!isEdit" :icon="'external-link-alt'" />
+      <InputBox :show="!isEdit" :icon="'external-link-alt'" />
     </div>
 
     <!-- Tooltip -->
-    <input-tooltip
+    <InputTooltip
       :showTool="showTool"
       :linkTypes="linkTypes"
       :linkClicked="linkClicked"
       ref="tooltip"
     />
-  </div>
+  </CustomInputContainer>
 </template>
 
 <script>
+import { styled } from '@egoist/vue-emotion';
 import InputTooltip from './InputTooltip.vue';
 import InputBox from './InputBox.vue';
 
+const CustomInputContainer = styled('div')`
+  position: relative;
+
+  & .custom-input {
+    width: 250px;
+    height: 40px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #bcc2cb;
+    position: relative;
+    flex: 1;
+  }
+`;
+
+const InputContainer = styled('div')`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  flex: 1;
+`;
+
+const InputMirror = styled('div')`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+`;
+
+const Input = styled('input')`
+  border: 0;
+  outline: none;
+  padding: 10px;
+`;
+
 export default {
   name: 'CustomInput',
-  components: { InputTooltip, InputBox },
+  // eslint-disable-next-line object-curly-newline
+  components: {
+    InputTooltip,
+    InputBox,
+    CustomInputContainer,
+    InputContainer,
+    InputMirror,
+    Input,
+  },
   data() {
     return {
       showTool: false,
@@ -103,10 +152,11 @@ export default {
   },
   methods: {
     validateInput() {
-      const { pattern } = this.linkTypes[this.selectedLink];
-      const isValid = !!this.value.match(pattern);
-      this.inputValid = isValid;
-      return isValid;
+      console.log(this.value);
+      // const { pattern } = this.linkTypes[this.selectedLink];
+      // const isValid = !!this.value.match(pattern);
+      // this.inputValid = isValid;
+      // return isValid;
     },
     inputChange(e) {
       const isValid = this.validateInput();
@@ -151,46 +201,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.custom-input-container {
-  position: relative;
-}
-
-.input-container {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  position: relative;
-  flex: 1;
-}
-
-.input-mirror {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  cursor: pointer;
-}
-
-.custom-input {
-  width: 250px;
-  height: 40px;
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #bcc2cb;
-  position: relative;
-  flex: 1;
-}
-
-.input {
-  border: 0;
-  outline: none;
-  padding: 10px;
-}
-</style>

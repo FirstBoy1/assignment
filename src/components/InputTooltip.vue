@@ -52,6 +52,7 @@ export default {
   padding: 7px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .tooltip-item:hover {

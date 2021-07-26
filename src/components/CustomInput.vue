@@ -154,8 +154,8 @@ export default {
     document.addEventListener('touchstart', this.listener.bind(this));
   },
   unmounted() {
-    document.removeEventListener('mousedown', this.listener);
-    document.removeEventListener('touchstart', this.listener);
+    document.removeEventListener('mousedown', this.listener.bind(this));
+    document.removeEventListener('touchstart', this.listener.bind(this));
   },
   methods: {
     validateInput(value) {

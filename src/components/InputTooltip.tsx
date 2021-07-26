@@ -1,22 +1,7 @@
-<template>
-  <ToolTip v-show="showTool" ref="tooltip">
-    <ToolTipContent>
-      <ToolTipItem
-        v-for="(link, index) of linkTypes"
-        :key="link.name"
-        @click="linkClicked(index)"
-      >
-        <Icon :icon="link.icon" />
-        <TooltipText>{{ link.text }}</TooltipText>
-      </ToolTipItem>
-    </ToolTipContent>
-  </ToolTip>
-</template>
-
-<script lang="ts">
 import { styled } from '@egoist/vue-emotion';
 import { Component, Vue } from 'vue-property-decorator';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { Link } from './types';
 
 const ToolTip = styled('div')`
   position: absolute;
@@ -72,5 +57,21 @@ const Icon = styled(FontAwesomeIcon)`
   // eslint-disable-next-line object-curly-newline
   components: { ToolTip, ToolTipContent, ToolTipItem, TooltipText, Icon },
 })
-export default class InputTooltip extends Vue {}
-</script>
+export default class InputTooltip extends Vue {
+  render() {
+    if (!this.$props.showTool) return null;
+
+    return (
+      <tool-tip ref="tooltip">
+        <tool-tip-content>
+          {this.$props.linkTypes.map((link: Link, index: number) => (
+            <tool-tip-item key={link.name} onClick={() => this.$props.linkClicked(index)}>
+              <icon icon={link.icon} />
+              <tooltip-text>{link.text}</tooltip-text>
+            </tool-tip-item>
+          ))}
+        </tool-tip-content>
+      </tool-tip>
+    );
+  }
+}

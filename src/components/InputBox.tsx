@@ -1,10 +1,3 @@
-<template>
-  <Box :class="boxClass" v-show="show" @click="onClick">
-    <Icon :icon="icon" />
-  </Box>
-</template>
-
-<script lang="ts">
 import { styled } from '@egoist/vue-emotion';
 import { Component, Vue } from 'vue-property-decorator';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -54,8 +47,17 @@ const Icon = styled(FontAwesomeIcon)`
     boxClass: String,
     icon: String,
     show: Boolean,
-    onClick: { type: Function, default: () => {} },
+    handleClick: { type: Function, default: () => {} },
   },
 })
-export default class InputBox extends Vue {}
-</script>
+export default class InputBox extends Vue {
+  render() {
+    if (!this.$props.show) return null;
+
+    return (
+      <box class={this.$props.boxClass} onClick={this.$props.handleClick}>
+        <icon icon={this.$props.icon} />
+      </box>
+    );
+  }
+}

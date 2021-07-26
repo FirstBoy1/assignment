@@ -1,66 +1,12 @@
-<template>
-  <CustomInputContainer>
-    <div
-      class="custom-input"
-      :class="{ 'orange-border': inputValid && isEdit }"
-    >
-      <InputBox
-        :show="!isEdit"
-        :icon="linkTypes[selectedLink].icon"
-        :onClick="toggleTool"
-      />
-
-      <InputContainer>
-        <Input
-          :type="linkTypes[selectedLink].type"
-          :placeholder="linkTypes[selectedLink].placeholder"
-          :value="value"
-          @keyup="inputChange"
-          ref="input"
-        />
-        <InputMirror v-if="!isEdit" @click.stop="mirrorClick" />
-      </InputContainer>
-
-      <InputBox
-        :show="isEdit"
-        :boxClass="inputValid && value.length ? 'box-orange' : ''"
-        :onClick="inputValid && value.length ? checkClick : () => {}"
-        :icon="'check'"
-      />
-
-      <InputBox :show="isEdit" :onClick="cancelInput" :icon="'times'" />
-
-      <InputBox
-        :boxClass="'box-white'"
-        :show="!!value.length && !isEdit"
-        :icon="'trash'"
-        :onClick="deleteClick"
-      />
-
-      <InputBox :show="!isEdit" :icon="'external-link-alt'" />
-    </div>
-
-    <!-- Tooltip -->
-    <InputTooltip
-      :showTool="showTool"
-      :linkTypes="linkTypes"
-      :linkClicked="linkClicked"
-      ref="tooltip"
-    />
-  </CustomInputContainer>
-</template>
-
-<script lang="ts">
 import { styled } from '@egoist/vue-emotion';
 import { Component, Vue } from 'vue-property-decorator';
-import InputTooltip from './InputTooltip.vue';
-import InputBox from './InputBox.vue';
+import InputTooltip from './InputTooltip';
+import InputBox from './InputBox';
 
 const CustomInputContainer = styled('div')`
   position: relative;
 
   & .custom-input {
-    // width: 250px;
     height: 40px;
     background: white;
     border-radius: 10px;
@@ -95,7 +41,7 @@ const InputMirror = styled('div')`
   cursor: pointer;
 `;
 
-const Input = styled('input')`
+const AppInput = styled('input')`
   border: 0;
   outline: none;
   padding: 10px;
@@ -109,7 +55,7 @@ const Input = styled('input')`
     CustomInputContainer,
     InputContainer,
     InputMirror,
-    Input,
+    AppInput,
   },
 })
 export default class CustomInput extends Vue {
@@ -135,8 +81,7 @@ export default class CustomInput extends Vue {
       name: 'email',
       type: 'email',
       placeholder: 'john@gmail.com',
-      pattern:
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     },
     {
       icon: 'copy',
@@ -144,8 +89,7 @@ export default class CustomInput extends Vue {
       name: 'page',
       type: 'url',
       placeholder: 'www.google.com',
-      pattern:
-        /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
+      pattern: /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
     },
     {
       icon: 'mobile-alt',
@@ -224,5 +168,53 @@ export default class CustomInput extends Vue {
   deleteClick() {
     this.value = '';
   }
+
+  render() {
+    return (
+      <custom-input-container>
+        <div class={`custom-input ${this.inputValid && this.isEdit ? 'orange-border' : ''}`}>
+          <input-box
+            show={!this.isEdit}
+            icon={this.linkTypes[this.selectedLink].icon}
+            handleClick={this.toggleTool}
+          />
+
+          <input-container>
+            <app-input
+              type={this.linkTypes[this.selectedLink].type}
+              placeholder={this.linkTypes[this.selectedLink].placeholder}
+              value={this.value}
+              onKeyup={this.inputChange}
+              ref="input"
+            />
+            {!this.isEdit && <input-mirror onClick={this.mirrorClick} />}
+          </input-container>
+
+          <input-box
+            show={this.isEdit}
+            boxClass={this.inputValid && this.value.length ? 'box-orange' : ''}
+            handleClick={this.inputValid && this.value.length ? this.checkClick : () => {}}
+            icon="check"
+          />
+
+          <input-box show={this.isEdit} handleClick={this.cancelInput} icon="times" />
+
+          <input-box
+            boxClass="box-white"
+            show={!!this.value.length && !this.isEdit}
+            icon="trash"
+            handleClick={this.deleteClick}
+          />
+
+          <input-box show={!this.isEdit} icon="external-link-alt" />
+        </div>
+        <input-tooltip
+          showTool={this.showTool}
+          linkTypes={this.linkTypes}
+          linkClicked={this.linkClicked}
+          ref="tooltip"
+        />
+      </custom-input-container>
+    );
+  }
 }
-</script>

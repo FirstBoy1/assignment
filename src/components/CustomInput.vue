@@ -117,11 +117,17 @@ export default class CustomInput extends Vue {
     input: HTMLInputElement;
     tooltip: any;
   };
+
   showTool = false;
+
   isEdit = false;
+
   value = '';
+
   selectedLink = 0;
+
   inputValid = true;
+
   linkTypes = [
     {
       icon: 'envelope',

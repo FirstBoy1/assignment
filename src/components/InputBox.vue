@@ -8,7 +8,9 @@
 import { styled } from '@egoist/vue-emotion';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-const Box = styled('div')`
+const Box = styled('button')`
+  border: 0;
+  outline: 0;
   width: 15%;
   height: 100%;
   background: #f0f2f6;
@@ -16,6 +18,7 @@ const Box = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 10px;
 
   &.box-orange {
     background: #e74f30;

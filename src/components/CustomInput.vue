@@ -1,6 +1,9 @@
 <template>
   <CustomInputContainer>
-    <div class="custom-input">
+    <div
+      class="custom-input"
+      :class="{ 'orange-border': inputValid && isEdit }"
+    >
       <InputBox
         :show="!isEdit"
         :icon="linkTypes[selectedLink].icon"
@@ -11,7 +14,6 @@
         <Input
           :type="linkTypes[selectedLink].type"
           :placeholder="linkTypes[selectedLink].placeholder"
-          :pattern="linkTypes[selectedLink].pattern || ''"
           :value="value"
           @keyup="inputChange"
           ref="input"
@@ -57,7 +59,7 @@ const CustomInputContainer = styled('div')`
   position: relative;
 
   & .custom-input {
-    width: 250px;
+    // width: 250px;
     height: 40px;
     background: white;
     border-radius: 10px;
@@ -68,6 +70,10 @@ const CustomInputContainer = styled('div')`
     border: 1px solid #bcc2cb;
     position: relative;
     flex: 1;
+  }
+
+  & .custom-input.orange-border {
+    border-color: #e74f30;
   }
 `;
 
@@ -92,6 +98,7 @@ const Input = styled('input')`
   border: 0;
   outline: none;
   padding: 10px;
+  flex: 1;
 `;
 
 export default {
@@ -143,8 +150,8 @@ export default {
     };
   },
   mounted() {
-    document.addEventListener('mousedown', this.listener);
-    document.addEventListener('touchstart', this.listener);
+    document.addEventListener('mousedown', this.listener.bind(this));
+    document.addEventListener('touchstart', this.listener.bind(this));
   },
   unmounted() {
     document.removeEventListener('mousedown', this.listener);
@@ -179,6 +186,7 @@ export default {
     mirrorClick() {
       this.isEdit = true;
       this.$refs.input.focus();
+      this.validateInput(this.value);
     },
     cancelInput() {
       this.value = '';

@@ -4,13 +4,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import CustomInput from './components/CustomInput.vue';
 
-export default {
-  name: 'App',
-  components: {
-    CustomInput,
-  },
-};
+@Component({ components: { CustomInput } })
+export default class App extends Vue {}
 </script>

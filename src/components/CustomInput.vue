@@ -50,8 +50,9 @@
   </CustomInputContainer>
 </template>
 
-<script>
+<script lang="ts">
 import { styled } from '@egoist/vue-emotion';
+import { Component, Vue } from 'vue-property-decorator';
 import InputTooltip from './InputTooltip.vue';
 import InputBox from './InputBox.vue';
 
@@ -101,9 +102,7 @@ const Input = styled('input')`
   flex: 1;
 `;
 
-export default {
-  name: 'CustomInput',
-  // eslint-disable-next-line object-curly-newline
+@Component({
   components: {
     InputTooltip,
     InputBox,
@@ -112,101 +111,112 @@ export default {
     InputMirror,
     Input,
   },
-  data() {
-    return {
-      showTool: false,
-      isEdit: false,
-      value: '',
-      selectedLink: 0,
-      inputValid: true,
-      linkTypes: [
-        {
-          icon: 'envelope',
-          text: 'Link to Email',
-          name: 'email',
-          type: 'email',
-          placeholder: 'john@gmail.com',
-          pattern:
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        },
-        {
-          icon: 'copy',
-          text: 'Link to Page',
-          name: 'page',
-          type: 'url',
-          placeholder: 'www.google.com',
-          pattern:
-            /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
-        },
-        {
-          icon: 'mobile-alt',
-          text: 'Link to Phone',
-          name: 'phone',
-          type: 'tel',
-          placeholder: '03099188777',
-          pattern: '0[0-9]{10}',
-        },
-      ],
-    };
-  },
+})
+export default class CustomInput extends Vue {
+  $refs!: {
+    input: HTMLInputElement;
+    tooltip: any;
+  };
+  showTool = false;
+  isEdit = false;
+  value = '';
+  selectedLink = 0;
+  inputValid = true;
+  linkTypes = [
+    {
+      icon: 'envelope',
+      text: 'Link to Email',
+      name: 'email',
+      type: 'email',
+      placeholder: 'john@gmail.com',
+      pattern:
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    },
+    {
+      icon: 'copy',
+      text: 'Link to Page',
+      name: 'page',
+      type: 'url',
+      placeholder: 'www.google.com',
+      pattern:
+        /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
+    },
+    {
+      icon: 'mobile-alt',
+      text: 'Link to Phone',
+      name: 'phone',
+      type: 'tel',
+      placeholder: '03099188777',
+      pattern: '0[0-9]{10}',
+    },
+  ];
+
   mounted() {
     document.addEventListener('mousedown', this.listener.bind(this));
     document.addEventListener('touchstart', this.listener.bind(this));
-  },
+  }
+
   unmounted() {
     document.removeEventListener('mousedown', this.listener.bind(this));
     document.removeEventListener('touchstart', this.listener.bind(this));
-  },
-  methods: {
-    validateInput(value) {
-      const { pattern } = this.linkTypes[this.selectedLink];
-      const isValid = !!value.match(pattern);
-      this.inputValid = isValid;
-      return isValid;
-    },
-    inputChange(e) {
-      const { value } = e.target;
-      this.value = value;
-      const isValid = this.validateInput(value);
-      if (e.key === 'Enter' && isValid) {
-        this.isEdit = false;
-        this.$refs.input.blur();
-      }
-    },
-    listener(event) {
-      if (
-        // eslint-disable-next-line operator-linebreak
-        !this.$refs.tooltip.$refs.tooltip ||
-        this.$refs.tooltip.$refs.tooltip.contains(event.target)
-      ) {
-        return;
-      }
-      this.showTool = false;
-    },
-    mirrorClick() {
-      this.isEdit = true;
-      this.$refs.input.focus();
-      this.validateInput(this.value);
-    },
-    cancelInput() {
-      this.value = '';
+  }
+
+  validateInput(value: string): boolean {
+    const { pattern } = this.linkTypes[this.selectedLink];
+    const isValid = !!value.match(pattern);
+    this.inputValid = isValid;
+    return isValid;
+  }
+
+  inputChange(e: any) {
+    const { value } = e.target;
+    this.value = value;
+    const isValid = this.validateInput(value);
+    if (e.key === 'Enter' && isValid) {
       this.isEdit = false;
-      this.inputValid = true;
-    },
-    linkClicked(link) {
-      this.selectedLink = link;
-      this.showTool = false;
-      this.value = '';
-    },
-    toggleTool() {
-      this.showTool = !this.showTool;
-    },
-    checkClick() {
-      this.isEdit = !this.isEdit;
-    },
-    deleteClick() {
-      this.value = '';
-    },
-  },
-};
+      this.$refs.input.blur();
+    }
+  }
+
+  listener(event: Event) {
+    if (
+      // eslint-disable-next-line operator-linebreak
+      !this.$refs.tooltip.$refs.tooltip ||
+      this.$refs.tooltip.$refs.tooltip.contains(event.target)
+    ) {
+      return;
+    }
+    this.showTool = false;
+  }
+
+  mirrorClick() {
+    this.isEdit = true;
+    this.$refs.input.focus();
+    this.validateInput(this.value);
+  }
+
+  cancelInput() {
+    this.value = '';
+    this.isEdit = false;
+    this.inputValid = true;
+  }
+
+  linkClicked(link: number) {
+    this.selectedLink = link;
+    this.showTool = false;
+    this.value = '';
+  }
+
+  toggleTool() {
+    this.showTool = !this.showTool;
+  }
+
+  checkClick() {
+    this.isEdit = !this.isEdit;
+  }
+
+  deleteClick() {
+    this.value = '';
+  }
+}
 </script>

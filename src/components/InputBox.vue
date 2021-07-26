@@ -4,8 +4,9 @@
   </Box>
 </template>
 
-<script>
+<script lang="ts">
 import { styled } from '@egoist/vue-emotion';
+import { Component, Vue } from 'vue-property-decorator';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const Box = styled('button')`
@@ -47,8 +48,7 @@ const Icon = styled(FontAwesomeIcon)`
   font-size: 80%;
 `;
 
-export default {
-  name: 'InputBox',
+@Component({
   components: { Box, Icon },
   props: {
     boxClass: String,
@@ -56,5 +56,6 @@ export default {
     show: Boolean,
     onClick: { type: Function, default: () => {} },
   },
-};
+})
+export default class InputBox extends Vue {}
 </script>

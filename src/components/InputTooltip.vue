@@ -13,8 +13,9 @@
   </ToolTip>
 </template>
 
-<script>
+<script lang="ts">
 import { styled } from '@egoist/vue-emotion';
+import { Component, Vue } from 'vue-property-decorator';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const ToolTip = styled('div')`
@@ -66,10 +67,10 @@ const Icon = styled(FontAwesomeIcon)`
   height: 16px;
 `;
 
-export default {
-  name: 'InputTooltip',
+@Component({
   props: ['showTool', 'linkTypes', 'linkClicked'],
   // eslint-disable-next-line object-curly-newline
   components: { ToolTip, ToolTipContent, ToolTipItem, TooltipText, Icon },
-};
+})
+export default class InputTooltip extends Vue {}
 </script>
